@@ -20,10 +20,5 @@
 			<type>2</type>
 			<location>D:/Hobby Projects/CTF_Examples/CTF_Examples/teamforgeExamples/bin/classes</location>
 		</link>
-		<link>
-			<name>src</name>
-			<type>2</type>
-			<location>D:/Hobby Projects/CTF_Examples/CTF_Examples/teamforgeExamples/src</location>
-		</link>
 	</linkedResources>
 </projectDescription>
