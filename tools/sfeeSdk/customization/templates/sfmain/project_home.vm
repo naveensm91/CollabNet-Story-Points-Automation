@@ -1,0 +1,231 @@
+<table>
+  <tr>
+    <td width="13%" valign="top" style="padding: 3px;">
+      <!-- Left Nav stuff -->
+      <table cellpadding="0" cellspacing="0" style="min-width:208px;">
+        <tr>
+          <td>
+            <table width="100%" cellpadding="0" cellspacing="0" >
+              <tr>
+                <td width="0%"><img src="/sf-images/misc/leftnav_leftcap.gif" width="5" height="22"></td>
+                <td width="100%" class="LeftNavigationHeader" >$MESSAGE.get("SfMain", "view_project.left_nav.project_box.title")</td>
+                <td width="0%"><img src="/sf-images/misc/leftnav_rightcap.gif" width="5" height="22"></td>
+              </tr>
+              <tr style="background-color: #DEE0EC;">
+                  #if (${project.useCustomProjectLogo})
+                    #set ($projectLogoSrc = "/sf/wiki/do/viewAttachment/${project.customLogoPathString}")
+                  #elseif (${GLOBAL.isHostedMode()})
+                    #set ($projectLogoSrc = "/sf-images/misc/project_sourceforge_ondemand.gif")
+                  #else
+                    #set ($projectLogoSrc = "/sf-images/misc/project_sourceforge.gif")
+                  #end
+                <td style="border-top: 1px solid #999999; border-left:  1px solid #999999; border-right:  1px solid #999999;" colspan="3" align="center"><img src="${projectLogoSrc}" width="206"></td>
+              </tr>
+            </table>
+            <table class="LeftNavigation" width="100%"  cellpadding="0" cellspacing="0">
+              <tr>
+                <td colspan="2">
+                  #if (${project.joinProjectButton})
+                    ${project.joinProjectButton.html}
+                    <br><br>
+                  #end
+                  <div class="HeaderText"><strong>${STRING.escapeXml($project.projectData.title)}</strong></div>
+                  <br>
+                  ${STRING.wordWrap(${TEXTPARSER.parseText(${STRING.escapeXml($project.projectData.description)})}, 24)}
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2">
+                  ${MESSAGE.get("SfMain", "view_project.left_nav.project_box.createdDate")}
+                  ${DATE.format($GLOBAL.datePattern, $project.projectData.createdDate)}
+		</td>
+	      </tr>
+              #if (${GLOBAL.isHostedMode()} && ${project.diskQuota} > 0)
+              <tr>
+                <td>${MESSAGE.get("SfMain", "view_project.left_nav.project_box.disk_quota.label")}:</td>
+		<td>
+		  #set ($diskUsageDisp = ${STRING.formatFileSize($project.diskUsage)})
+		  #set ($diskQuotaDisp = ${STRING.formatFileSize($project.diskQuota)})
+		  #set ($percentDiskUsageDisp = ${NUMBER.format("percent", $project.percentDiskUsage)})
+		  ${MESSAGE.get("SfMain", "view_project.left_nav.project_box.disk_quota.text", $diskUsageDisp, $percentDiskUsageDisp, $diskQuotaDisp)}
+		</td>
+              </tr>
+              #end
+              <tr>
+                <td colspan="2">
+                    <a href="#news">${MESSAGE.get("SfMain", "view_project.left_nav.project_box.project_news")}</a> (${MESSAGE.get("SfMain", "view_project.left_nav.project_box.news_items", "$project.newsList.size()")})
+                </td>
+              </tr>
+
+              <!-- Blackduck report -->
+              #if (${project.isBlackduckEnabled()})
+
+              <tr class="LeftNavigationWidgetHeader">
+                <td colspan="2"><strong><${MESSAGE.get("SfMain", "view_project.left_nav.blackduck_box.title")}</strong></td>
+              </tr>
+
+              #if (${project.reportUploadDate})
+              <tr>
+                <td class="LeftNavigationWidget"  colspan="2">
+                  ${MESSAGE.get("SfMain", "view_project.left_nav.blackduck_box.last_analyzed")} ${DATE.format($GLOBAL.datePattern, $project.reportUploadDate)}
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2">
+                  <a href="${project.blackduckUrl}" target="blackduckWindow">${MESSAGE.get("SfMain", "view_project.left_nav.blackduck_box.countLicensesUnique", $project.blackduckReport.countLicensesUnique)}</a><br>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2">
+                  <a href="${project.blackduckUrl}" target="blackduckWindow">${MESSAGE.get("SfMain", "view_project.left_nav.blackduck_box.countCodeOriginsActive", "$project.blackduckReport.countCodeOriginsActive")}</a><br>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2">
+                  <a href="${project.blackduckUrl}" target="blackduckWindow">${MESSAGE.get("SfMain", "view_project.left_nav.blackduck_box.countCodeMatchesFiles", "$project.blackduckReport.countCodeMatchesFiles")}</a><br>
+                </td>
+              </tr>
+              #else
+              <tr>
+                <td class="LeftNavigationWidget"  colspan="2">
+                  ${MESSAGE.get("SfMain", "view_project.left_nav.blackduck_box.no_analysis")}
+                </td>
+              </tr>
+              #end
+              <tr>
+                <td colspan="2">
+                  <a href="${project.blackduckUrl}" target="blackduckWindow"><span style="font-weight: bold;">${MESSAGE.get("SfMain", "view_project.left_nav.blackduck_box.open_blackduck")}</span></a><br>
+                </td>
+              </tr>
+
+              #end
+              <!-- End of blackduck report-->
+              
+              #if (${GLOBAL.isCategorizationEnabled()} && ${project.categoryList} && ${project.categoryList.size()} > 0)
+              <tr class="LeftNavigationWidgetHeader">
+                <td colspan="2"><strong>${MESSAGE.get("SfMain", "view_project.left_nav.categories_box.title")}</strong></td>
+              </tr>
+              <tr>
+                <td class="LeftNavigationWidget"  colspan="2">
+                  #foreach ($category in $project.categoryList)
+		    ${LINK.getCategoryUrl(${category.path.getPathString()})}<br />
+                  #end
+                </td>
+              </tr>
+	      #end
+              <tr class="LeftNavigationWidgetHeader">
+                <td colspan="2"><strong>${MESSAGE.get("SfMain", "view_project.left_nav.members_box.title")}</strong></td>
+              </tr>
+              <tr>
+                <td class="LeftNavigationWidget"  colspan="2">
+                  ${MESSAGE.get("SfMain", "view_project.left_nav.members_box.total_project_members")}${project.memberList.size()}
+                </td>
+              </tr>
+              <tr>
+                <td width="100%" style="padding-top:0px; border-top: 1px solid #999999;"  colspan="2">
+                  <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                    <tr >
+                      <td align="left" style="padding-left:0px; padding-bottom:5px;"  colspan="2">
+                        ${MESSAGE.get("SfMain", "view_project.left_nav.members_box.project_administrators")}
+                      </td>
+                    </tr>
+                    #foreach ($admin in $project.adminList)
+                      <tr>
+                        <td align="left" style="padding-left:0px; padding-bottom:2px; padding-top:3px;" colspan="2">
+                          ${LINK.getUserUrl($admin.username, ${STRING.escapeXml($admin.fullName)})}<br>
+                        </td>
+                      </tr>
+                    #end
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </td>
+    <td valign="top"  style="padding: 3px;">
+      <!-- Content stuff -->
+      <table width="100%">
+        <tr>
+          <td>
+            #if (${project.useCustomHomePage})
+              <table class="ItemDetailContainer" width="100%" id="ProjectHomeWikiContents">
+                <tr class="WidgetHeader">
+                  <td>${MESSAGE.get("SfMain", "view_project.content.project_home_page")}</td>
+                </tr>
+                <tr>
+                  <td class="ItemDetailContainerCell">
+                    ${project.customHomePage}
+                  </td>
+                </tr>
+                #if (${project.isProjectAdmin()})
+                  <tr class="WidgetFooter">
+                    <td>
+                      <div class="AlignRight">
+                        ${project.editCustomHomeButton.html}
+                      </div>
+                    </td>
+                  </tr>
+                #end
+              </table>
+            #else
+            <table class="ItemDetailContainer" width="100%" id="DefaultProjectHomeContents">
+              <tr class="WidgetHeader">
+                <td colspan="2">${MESSAGE.get("SfMain", "view_project.content.project_statistics")}</td>
+              </tr>
+              <tr>
+                <!-- task statistics chart -->
+                <td class="ItemDetailContainerCell">
+                  #set ($renameUrl = "/sf/statistics/do/editTaskStatisticsChart/${project.projectPath}")
+                  <a href="javascript:NewWindow('${renameUrl}', 'sfptaskStatistics', 950, 570, 'no');">
+                    <img width="354" height="183" src="/sf/statistics/do/taskStatisticsChart/${project.projectPath}" border="0" /><br>
+		  </a>
+                  <a href="javascript:NewWindow('${renameUrl}', 'sfptaskStatistics', 950, 570, 'no');">
+                    ${MESSAGE.get("SfMain", "view_project.content.enlarge_graph")}
+                  </a>
+                </td>
+
+                <!-- tracker statistics chart -->
+                <td class="ItemDetailContainerCell">
+                  #set ($renameUrl = "/sf/statistics/do/editArtifactStatisticsChart/${project.projectPath}")
+                  <a href="javascript:NewWindow('${renameUrl}', 'sfpartifactStatistics', 950, 570, 'no');">
+                    <img width="354" height="183" src="/sf/statistics/do/artifactStatisticsChart/${project.projectPath}" border="0"><br>
+		  </a>
+                  <a href="javascript:NewWindow('${renameUrl}', 'sfpartifactStatistics', 950, 570, 'no');">
+                    ${MESSAGE.get("SfMain", "view_project.content.enlarge_graph")}
+                  </a>
+                </td>
+              </tr>
+
+              <tr>
+                <!-- document statistics chart -->
+                <td class="ItemDetailContainerCell">
+                  #set ($renameUrl = "/sf/statistics/do/editDocumentStatisticsChart/${project.projectPath}")
+                  <a href="javascript:NewWindow('${renameUrl}', 'sfpdocumentStatistics', 950, 570, 'no');">
+                    <img width="354" height="183" src="/sf/statistics/do/documentStatisticsChart/${project.projectPath}" border="0"/><br>
+	          </a>
+                  <a href="javascript:NewWindow('${renameUrl}', 'sfpdocumentStatistics', 950, 570, 'no');">
+                    ${MESSAGE.get("SfMain", "view_project.content.enlarge_graph")}
+                  </a>
+                </td>
+
+		<!-- frs statistics chart -->
+                <td class="ItemDetailContainerCell">
+                  #set ($renameUrl = "/sf/statistics/do/editFrsStatisticsChart/${project.projectPath}")
+                  <a href="javascript:NewWindow('${renameUrl}', 'sfpfrsStatistics', 950, 570, 'no');">
+                    <img width="354" height="183" src="/sf/statistics/do/frsStatisticsChart/${project.projectPath}" border="0"><br>
+                  </a>
+                  <a href="javascript:NewWindow('${renameUrl}', 'sfpfrsStatistics', 950, 570, 'no');">
+                    ${MESSAGE.get("SfMain", "view_project.content.enlarge_graph")}
+                  </a>
+                </td>
+              </tr>
+            </table>
+            #end
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>

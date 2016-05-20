@@ -1,0 +1,52 @@
+<table class="TopMenu">
+  #if ($buttons.size() > 0)
+  <tr class="ButtonRow">
+    #if ($selectedIndex != 0)
+    <td class="VerticalSeparatorNoBorder"><img src="$IMAGE_ROOT/misc/white.gif" border="0" height="40" width="1"></td>
+    #end
+    #foreach ($button in $buttons)
+       #set ($borderClass = "VerticalSeparator")
+       #set ($selectedClass = "")
+       #if ($button.Name.equals($selected))
+           #set ($selectedClass = "Selected")
+	   #set ($borderClass = "VerticalSeparatorNoBorder")
+    <td class="SelectedLeft"><img src="$IMAGE_ROOT/misc/pixel.gif" border="0" height="1" width="4"></td>
+       #end
+    <td class="Button $selectedClass" onclick="window.location = '${LINK.getPageUrl(${urlBase}, ${button.targetUrl})}'; return false;"><a href="${LINK.getPageUrl(${urlBase}, ${button.TargetUrl})}" target="_top"><img src="${urlBase}${button.ImageLocation}" width="25" height="20" border="0"><br>$button.Title</a></td>
+       #if ($button.Name.equals($selected))
+    <td class="SelectedRight"><img src="$IMAGE_ROOT/misc/pixel.gif" border="0" height="1" width="4"/></td>
+       #end
+       #if (($velocityCount >= 1 && $selectedIndex != $velocityCount) || ($velocityCount == 1 && $selectedIndex == 0))
+    <td class="$borderClass"><img src="$IMAGE_ROOT/misc/white.gif" border="0" height="40" width="1"></td>
+       #end
+       #if ($velocityCount == $buttons.size())
+         #if ($buttons.size() == $selectedIndex)
+           <td class="VerticalSeparator"><img src="$IMAGE_ROOT/misc/white.gif" border="0" height="40" width="1"></td>
+         #end
+    <td class="ButtonEnd"></td>
+       #end
+    #end
+  </tr>
+
+  <tr class="ShadowRow">
+    #if ($selectedIndex == $buttons.size())
+      #set ($leftCells = -1)
+    #else
+      #set ($leftCells = $selectedIndex * 2)
+    #end
+
+    #if ($leftCells < 0)
+      #set ($rightCells = 2 * $buttons.size() + 3)
+    #else
+      #if ($leftCells > 0)
+        <td colspan="$leftCells"></td>
+      #end
+      <td class="SelectedLeft"></td>
+      <td class="Selected"></td>
+      <td class="SelectedRight"></td>
+      #set ($rightCells = 2 * $buttons.size() - $leftCells)
+    #end
+    <td colspan="$rightCells"></td>
+  </tr>
+  #end
+</table>

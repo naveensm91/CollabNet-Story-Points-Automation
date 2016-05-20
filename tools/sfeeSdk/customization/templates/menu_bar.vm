@@ -1,0 +1,198 @@
+##
+## @COPYRIGHT
+## SourceForge(r) Enterprise Edition
+## Copyright 2007 CollabNet, Inc. All rights reserved.
+## http://www.collab.net
+## COPYRIGHT@
+##
+
+## include the RoboHelp script that will let us get context-sensitive help
+## TODO: this should probably be /sf-help/... instead - fix problem with that!
+<script type="text/javascript" src="/sf-help/RoboHelp_CSH.js"></script>
+<script type="text/javascript">
+    ## help root is the path to the Index.htm file, followed by '>HelpWin', which identifies the window definition by name.
+    ## Various window definitions are patched by hand into the generated file whcshdata.htm (see the .patch file in same directory).
+    ## Yes, that's ugly; waiting for feedback from RoboHelp on a better way to do it.
+    #if (${GLOBAL.isHostedMode()})
+      var helpRoot = '${MESSAGE.get("Common", "url.helpPageBase.hosted")}>HelpWin';
+    #else
+      var helpRoot = '${MESSAGE.get("Common", "url.helpPageBase")}>HelpWin';
+    #end
+
+    // show help for a topic
+    function showTopicHelp(topicId) {
+	// First, close the help menu
+	closeMenu(activeButton);
+	RH_ShowHelp(0, helpRoot, HH_HELP_CONTEXT, topicId);
+    }
+
+    // show help for a topic
+    function showTopicHelpDirectly(topicId) {
+	RH_ShowHelp(0, helpRoot, HH_HELP_CONTEXT, topicId);
+    }
+
+    // show the help table of contents
+    function showHelpContents() {
+	// First, close the help menu
+	closeMenu(activeButton);
+	RH_ShowHelp(0, helpRoot, HH_DISPLAY_TOC, 0);
+    }
+
+    // show the help index
+    function showHelpIndex() {
+	// First, close the help menu
+	closeMenu(activeButton);
+	RH_ShowHelp(0, helpRoot, HH_DISPLAY_INDEX, 0);
+    }
+
+    // show the help index (not from a menu)
+    function showHelpIndexFromLink() {
+	RH_ShowHelp(0, helpRoot, HH_DISPLAY_INDEX, 0);
+    }
+</script>
+
+## Set up the contents of the project menu, including current user's member projects if any
+<div id="ProjectMenu" class="menu">
+#if (${menuBar.myProjects} && ${menuBar.myProjects.size()} > 0)
+  #foreach ($project in ${menuBar.myProjects})
+    <a class="menuItem" href="${menuBar.urlBase}/sf/projects/${project.path.projectName}">${STRING.escapeXml($project.title)}</a>
+  #end
+    <div class="menuItemSep"></div>
+#end
+    <a class="menuItem" href="${menuBar.urlBase}/sf/sfmain/do/myProjects?selectedTab=my">${MESSAGE.get("common", "top.projects.myProjects")}</a>
+    <a class="menuItem" href="${menuBar.urlBase}/sf/sfmain/do/myProjects?selectedTab=all">${MESSAGE.get("common", "top.projects.allProjects")}</a>
+</div>
+
+<div id="SearchMenu" class="menu">
+  <a class="menuItem" href="${menuBar.urlBase}/sf/search/do/quickJump" onClick="window.open('${menuBar.urlBase}/sf/search/do/quickJump', 'quickjumpwindow', 'width=540,height=263'); closeMenu(activeButton); return false">${MESSAGE.get("common", "top.search.quickJump")}</a>
+  <a class="menuItem" id="search" href="${menuBar.urlBase}/sf/search/do/search">${MESSAGE.get("common", "top.search.search")}</a>
+#if (${menuBar.historyTrack} && ${menuBar.historyTrack.size()} > 0)
+  #set( $showLine = true)
+  #foreach ($item in ${menuBar.historyTrack})
+     #if (!${menuBar.currentItemDO} || (${menuBar.currentItemDO} != ${item.objectKey.guid}))
+       #if ($showLine)
+          <div class="menuItemSep"></div>
+          #set( $showLine = false)
+       #end
+       <a class="menuItem" href="${menuBar.urlBase}/sf/go/${item.objectKey.guid}">${STRING.escapeXml($item.shortDescription)}</a>
+     #end
+  #end
+#end
+</div>
+
+## Set up the contents of the help menu, based on whether there is topic help for the current page
+<div id="HelpMenu2" class="menu">
+#if (${menuBar.helpTopicId} && ${menuBar.helpTopicId.length()} != 0)
+    <a class="menuItem" href="javascript:showTopicHelp(${menuBar.helpTopicId})">${MESSAGE.get("common", "top.help.contextHelp")}</a>
+#end
+#if (${GLOBAL.isHostedMode()})
+    #set ($urlGuideKey = "url.userGuide.hosted")
+#else
+    #set ($urlGuideKey = "url.userGuide")
+#end
+<a class="menuItem" href="javascript:showHelpContents()">${MESSAGE.get("common", "top.help.contents")}</a>
+<a class="menuItem" href="javascript:showHelpIndex()">${MESSAGE.get("common", "top.help.index")}</a>
+<a class="menuItem" href="${MESSAGE.get("common", $urlGuideKey)}">${MESSAGE.get("common", "top.help.userGuide")}</a>
+<div class="menuItemSep"></div>
+<a class="menuItem" href="${menuBar.urlBase}/sf/global/do/about" onclick="javascript:closeMenu(activeButton); window.open('${menuBar.urlBase}/sf/global/do/about','sfpabout','height=450,width=600'); return false;">${MESSAGE.get("common", "top.help.about")}</a>
+</div>
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0" class="mastHeadBackground">
+ <tr>
+  <td>
+   <table width="300" border="0" cellpadding="0" cellspacing="0" class="mastHeadLink">
+     <tr class="mastHeadLinkSpacing">
+       <td nowrap="nowrap" valign="middle"><a href="${LINK.getPageUrl(${menuBar.urlBase}, "/sfmain/do/home")}" target="_top"><img src="${menuBar.urlBase}/sf-images/masthead/logo-custom.gif" border="0" align="absmiddle"><img src="${menuBar.urlBase}/sf-images/masthead/logo.gif" border="0" align="absmiddle"></a></td>
+     #if (${PAGE_INFO.isLoggedIn()})
+       #if (${menuBar.sfMast} == "home") #set ($cellClass = "mastHeadLinkSelected") #else #set ($cellClass = "mastHeadLink") #end
+       <td nowrap="nowrap" class="$cellClass"><a href="${LINK.getPageUrl(${menuBar.urlBase}, "/sfmain/do/home")}" target="_top">${MESSAGE.get("common", "header.home")}</a></td>
+       <td nowrap="nowrap" class="mastHeadLinkSpacing"> </td>
+
+       #if (${menuBar.categorizationEnabled})
+         #if (${menuBar.sfMast} == "pmap") #set ($cellClass = "mastHeadLinkSelected") #else #set ($cellClass = "mastHeadLink") #end
+         <td nowrap="nowrap" class="$cellClass"><a href="${LINK.getPageUrl(${menuBar.urlBase}, "/categorization/do/browse/projects/categorization.root")}" target="_top">${MESSAGE.get("common", "header.projectmap")}</a></td>
+         <td nowrap="nowrap" class="mastHeadLinkSpacing"> </td>
+       #end
+
+       #if (${menuBar.sfMast} == "my") #set ($cellClass = "mastHeadLinkSelected") #else #set ($cellClass = "mastHeadLink") #end
+       <td nowrap="nowrap" class="$cellClass"><a href="${LINK.getPageUrl(${menuBar.urlBase}, "/sfmain/do/myPage")}" target="_top">${MESSAGE.get("common", "header.mypage")}</a></td>
+       <td nowrap="nowrap" class="mastHeadLinkSpacing"> </td>
+       #if (${PAGE_INFO.isSuperUser()})
+         #if (${menuBar.sfMast} == "admin") #set ($cellClass = "mastHeadLinkSelected") #else #set ($cellClass = "mastHeadLink") #end
+         <td nowrap="nowrap" class="${cellClass}"><a href="${LINK.getPageUrl(${menuBar.urlBase}, "/sfmain/do/listProjectsAdmin")}" target="_top" id="admin_link">${MESSAGE.get("common", "header.admin")}</a></td>
+         <td nowrap="nowrap" class="mastHeadLinkSpacing"> </td>
+       #end
+
+       #if (!${menuBar.sfMast} || ${menuBar.sfMast} == "") #set ($cellClass = "mastHeadLinkSelected") #else #set ($cellClass = "mastHeadLink") #end
+       <td nowrap="nowrap" class="$cellClass"><a href="#" onclick="return buttonClick(this, 'ProjectMenu');">${MESSAGE.get("common", "header.projects")}<img src="${menuBar.urlBase}/sf-images/masthead/dropdown.gif" width="7" height="4" hspace="2" border="0"></a></td>
+       <td nowrap="nowrap" class="mastHeadLinkSpacing"> </td>
+       #if (${menuBar.sfMast} == "search") #set ($cellClass = "mastHeadLinkSelected") #else #set ($cellClass = "mastHeadLink") #end
+       <td nowrap="nowrap" class="$cellClass"><a href="#" onclick="return buttonClick(this, 'SearchMenu');">${MESSAGE.get("common", "header.search")}<img src="${menuBar.urlBase}/sf-images/masthead/dropdown.gif" width="7" height="4" hspace="2" border="0"></a></td>
+
+     #else
+       #if (${menuBar.sfMast} == "home") #set ($cellClass = "mastHeadLinkSelected") #else #set ($cellClass = "mastHeadLink") #end
+       <td nowrap="nowrap" class="$cellClass"><a href="${LINK.getPageUrl(${menuBar.urlBase}, "/sfmain/do/home")}" target="_top">${MESSAGE.get("common", "header.home")}</a></td>
+       <td nowrap="nowrap" class="mastHeadLinkSpacing"> </td>
+       #if (${menuBar.categorizationEnabled})
+	 <td nowrap="nowrap" class="$cellClass"><a href="${LINK.getPageUrl(${menuBar.urlBase}, "/categorization/do/browse/projects/categorization.root")}" target="_top">${MESSAGE.get("common", "header.projectmap")}</a></td>
+         <td nowrap="nowrap" class="mastHeadLinkSpacing"> </td>
+       #end
+       #if (${menuBar.sfMast} == "project") #set ($cellClass = "mastHeadLinkSelected") #else #set ($cellClass = "mastHeadLink") #end
+       <td nowrap="nowrap" class="$cellClass"><a href="${LINK.getPageUrl(${menuBar.urlBase}, "/sfmain/do/listProjects")}" target="_top">${MESSAGE.get("common", "header.projects")}</a></td>
+       <td nowrap="nowrap" class="mastHeadLinkSpacing"> </td>
+       #if (${menuBar.sfMast} == "search") #set ($cellClass = "mastHeadLinkSelected") #else #set ($cellClass = "mastHeadLink") #end
+       <td nowrap="nowrap" class="$cellClass"><a href="#" onclick="return buttonClick(this, 'SearchMenu');">${MESSAGE.get("common", "header.search")}<img src="${menuBar.urlBase}/sf-images/masthead/dropdown.gif" width="7" height="4" hspace="2" border="0"></a></td>
+     #end
+
+     #set ($siteLinks=${menuBar.siteLinks})
+     #if (${siteLinks} && ${siteLinks.size()} > 0)
+       #foreach ($link in ${siteLinks})
+         <td nowrap="nowrap" class="mastHeadLinkSpacing"> </td>
+         <td nowrap="nowrap" class="mastHeadLink"><a href="${link.get(1)}" target="_blank">${STRING.escapeXml(${link.get(0)})}</a></td>
+       #end
+     #end
+
+     #if (${PAGE_INFO.isLoggedIn()})
+       #if (${menuBar.siteLinkedApplications} && ${menuBar.siteLinkedApplications.size()} > 0)
+         #if (${menuBar.currentProjectPath}) #set ($pPath = "/${menuBar.currentProjectPath}") #else #set ($pPath = "") #end
+         #foreach ($app in ${menuBar.siteLinkedApplications})
+           #if (${menuBar.sfMast} == ${app.id.guid}) #set ($cellClass = "mastHeadLinkSelected") #else #set ($cellClass = "mastHeadLink") #end
+           <td nowrap="nowrap" class="mastHeadLinkSpacing"> </td>
+           <td nowrap="nowrap" class="$cellClass"><a id="siteLinkedApp${velocityCount}" href="${LINK.getPageUrl(${menuBar.urlBase}, "/linkedapplication/do/viewSiteLinkedApplication$pPath?id=${app.id.guid}")}" target="_top">${STRING.escapeXml($app.title)}</a></td>
+         #end
+       #end
+     #end
+
+     </tr>
+   </table>
+  </td>
+  <td align="right">
+    <table border="0" cellspacing="0" cellpadding="0" class="mastHeadLink">
+      <tr class="mastHeadLink">
+        #if (${PAGE_INFO.isLoggedIn()})
+          <td nowrap="nowrap" id="UserLoggedIn">${MESSAGE.get("common", "header.loggedin")}&nbsp;${STRING.escapeXml($PAGE_INFO.currentUser.FullName)}&nbsp;<div id="CurrentUsername" style="display: none;">${PAGE_INFO.currentUser.username}</div></td>
+          <td nowrap="nowrap"><img src="${menuBar.urlBase}/sf-images/masthead/vertical_line.gif" width="1" height="19" hspace="4"></td>
+          <td nowrap="nowrap">&nbsp;<a href="#" onclick="return buttonClick(this, 'HelpMenu2');"><img src="${menuBar.urlBase}/sf-images/masthead/help.gif" width="21" height="21" border="0"></a></td>
+          <td nowrap="nowrap">&nbsp;<a href="${LINK.getPageUrl(${menuBar.urlBase}, "/sfmain/do/logout")}" target="_top"><img src="${menuBar.urlBase}/sf-images/masthead/logout.gif" alt="${MESSAGE.get("common", "header.logout")}" width="19" height="21" border="0"></a></td>
+        #else
+          #if (!$menuBar.sfPage || $menuBar.sfPage != "HOME")
+            ${FORM.startForm("/sfmain/do/login", "globalLogin", "login")}
+              <input type="hidden" name="returnToUrl" value="${menuBar.globalLoginReturnToURL}"/>
+              <td nowrap="nowrap">${MESSAGE.get("common", "prompt.username")}</td>
+              <td nowrap="nowrap"><input type="text" name="username" class="inputfield" size="8"/></td>
+              <td nowrap="nowrap">${MESSAGE.get("common", "prompt.password")}</td>
+              <td nowrap="nowrap"><input type="password" name="password" class="inputfield" size="8" onkeypress="javascript:submitLoginOnEnter(event)" /></td>
+              <td nowrap="nowrap"><a href="javascript:submitForm(document.getElementById('globalLogin'), 'submit');">${MESSAGE.get("common", "header.login")}</a></td>
+            ${FORM.endForm()}
+            <td nowrap="nowrap"><img src="${menuBar.urlBase}/sf-images/masthead/vertical_line.gif" width="1" height="19" hspace="4"></td>
+          #end
+          <td nowrap="nowrap"><a href="#" onclick="return buttonClick(this, 'HelpMenu2');"><img src="${menuBar.urlBase}/sf-images/masthead/help.gif" width="21" height="21" border="0"></a></td>
+        #end
+      </tr>
+    </table>
+  </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="black"><img src="${menuBar.urlBase}/sf-images/misc/pixel.gif" width="1" height="1"></td>
+  </tr>
+</table>

@@ -1,0 +1,179 @@
+<table width="100%" border="0" cellpadding="4" cellspacing="0">
+  <tr valign="top">
+    <td width="13%" >
+      <!-- Left Nav stuff -->
+      <table width="210" cellpadding="0" cellspacing="0" >
+        <tr>
+          <td>
+           <table width="100%" cellpadding="0" cellspacing="0" >
+             <tr>
+               <td><img src="/sf-images/misc/leftnav_leftcap.gif" width="5" height="22"></td>
+               <td width="100%" class="LeftNavigationHeader" ><img src="/sf-images/misc/pixel.gif">
+                 #if ($PAGE_INFO.isLoggedIn())
+                   ${MESSAGE.get("SfMain", "index.left_nav.most_active_box.title")}
+                 #else
+                   ${MESSAGE.get("SfMain", "index.left_nav.login_box.title")}
+                 #end
+               </td>
+               <td><img src="/sf-images/misc/leftnav_rightcap.gif" width="5" height="22"></td>
+             </tr>
+           </table>
+           <table class="LeftNavigation" width="100%">
+           #if (!$PAGE_INFO.isLoggedIn())
+             <tr>
+               <td class="ContainerBodyWithBorder" >
+                 ${FORM.startForm("/sfmain/do/login", "localLogin", "login")}
+                 <table class="LeftNavigationWidget" width="100%">
+                   <tr>
+                     <td>${MESSAGE.getFieldLabel("SfMain", "sfmain.prompt.username", true)}</td>
+                     <td><input type="text" name="username" class="inputfield" size="13"/></td>
+                   </tr>
+                   <tr>
+                     <td>${MESSAGE.getFieldLabel("common", "prompt.password", true)}</td>
+                     <td><input type="password" name="password" class="inputfield" size="13" onkeypress="javascript:submitLoginOnEnter(event)" /></td>
+                   </tr>
+                   #if (!$GLOBAL.isUsingExternalAuthentication())
+                     <tr>
+                       <td colspan="2">
+                         <a href="${LINK.getPageUrl("", "/sfmain/do/forgotPassword")}">${MESSAGE.get("SfMain", "sfmain.forgotpassword.link")}</a>
+                       </td>
+                     </tr>
+                   #end
+                   <tr>
+                     #set ($submitText = $MESSAGE.get("SfMain", "sfmain.login"))
+                     <td colspan="2"><div class="AlignRight">${PAGE_INFO.createSubmitButton("loginButton", "localLogin", "<strong>$submitText</strong>")}</div></td>
+                   </tr>
+                   ${FORM.endForm()}
+                 </table>
+               </td>
+             </tr>
+             <tr>
+               <td>
+                 <table class="LeftNavigationWidget">
+                   <tr>
+                     #if ($GLOBAL.isUsingExternalAuthentication())
+                       <td>
+                         <strong>${MESSAGE.get("SfMain", "index.left_nav.new_user_box.title")}</strong>
+                         <br/><br/>
+                         ${MESSAGE.get("SfMain", "index.left_nav.new_user_box.login_to_create_account")}
+                       </td>
+                     #elseif ($GLOBAL.isSelfCreationEnabled())
+                       <td>
+                         <strong>${MESSAGE.get("SfMain", "index.left_nav.new_user_box.title")}</strong>
+                         <br/><br/>
+                         <a href="${LINK.getPageUrl("", "/sfmain/do/createUser")}">${MESSAGE.get("SfMain", "index.left_nav.new_user_box.create_account")}</a>
+                         <br/><br/>
+                         #if ($GLOBAL.isApprovalRequiredForNewUsers())
+                           ${MESSAGE.get("SfMain", "index.left_nav.new_user_box.create_account_with_approval_text")}
+                         #else
+                           ${MESSAGE.get("SfMain", "index.left_nav.new_user_box.create_account_text")}
+                         #end
+                       </td>
+                     #else
+                       <td>
+                         <strong>${MESSAGE.get("SfMain", "index.left_nav.new_user_box.title")}</strong>
+                         <br/><br/>
+                         ${MESSAGE.get("SfMain", "index.left_nav.new_user_box.ask_sysadmin_for_account")}
+                       </td>
+                     #end
+                   </tr>
+                 </table>
+               </td>
+             </tr>
+
+             <tr class="LeftNavigationWidgetHeader">
+               <td><strong>${MESSAGE.get("SfMain", "index.left_nav.most_active_box.title")}</strong></td>
+             </tr>
+           #end
+           <tr>
+             <td class="LeftNavigationWidget">
+               ${home.mostActiveProjects}
+             </td>
+           </tr>
+
+           <tr class="LeftNavigationWidgetHeader">
+             <td><strong>${MESSAGE.get("SfMain", "index.left_nav.quick_links.title")}</strong></td>
+           </tr>
+           <tr>
+             <td>
+               <table class="LeftNavigationWidget">
+                #set ($quickLinks=${home.quickLinks})
+                   #if (${quickLinks} && ${quickLinks.size()} > 0)
+                   #foreach ($link in ${quickLinks})
+                     <tr>
+                       <td><img src="/sf-images/icons/bullet_color.gif"> <strong><a class="menuItem" href="${link.get(1)}" target="_blank">${STRING.escapeXml(${link.get(0)})}</a></strong></td>
+                     </tr>
+                     <tr>
+                       <td>${link.get(2)}</td>
+                     </tr>
+                     #end
+                   #end
+
+                 <tr>
+                   <td><img src="/sf-images/icons/bullet_color.gif"> <strong><a href="javascript:RH_ShowHelp(0, helpRoot, HH_DISPLAY_TOC, 0);;">${MESSAGE.get("SfMain", "index.left_nav.quick_links.online_help")}</a></strong></td>
+                 </tr>
+                 <tr>
+                   <td>${MESSAGE.get("SfMain", "index.left_nav.quick_links.online_help.text")}</td>
+                 </tr>
+                 <tr>
+                   <td><img src="/sf-images/icons/bullet_color.gif">
+                     <strong><a href="#" onclick="javascript:window.open('${MESSAGE.get("Common", "url.userGuide")}', 'uguide', '');">${MESSAGE.get("SfMain", "index.left_nav.quick_links.sf_user_guide")}</a></strong>
+                   </td>
+                 </tr>
+                 <tr>
+                   <td>${MESSAGE.get("SfMain", "index.left_nav.quick_links.sf_user_guide.text")}</td>
+                 </tr>
+                 #if ($home.displaySourceForgeLinks)
+                   <tr>
+                     <td><img src="/sf-images/icons/bullet_color.gif"> <strong><a class="menuItem" href="http://www.collab.net/" target="_blank">${MESSAGE.get("SfMain", "index.left_nav.quick_links.collabnet")}</a></strong></td>
+                   </tr>
+                   <tr>
+                     <td>${MESSAGE.get("SfMain", "index.left_nav.quick_links.collabnet.text")}</td>
+                   </tr>
+                   <tr>
+                     <td><img src="/sf-images/icons/bullet_color.gif"> <strong><a class="menuItem" href="http://www.collab.net/sfee/welcome/" target="_blank">${MESSAGE.get("SfMain", "index.left_nav.quick_links.vasw_link")}</a></strong></td>
+                   </tr>
+                   <tr>
+                     <td>${MESSAGE.get("SfMain", "index.left_nav.quick_links.vasw_link.text")}</td>
+                   </tr>
+		   #end
+               </table>
+             </td>
+           </tr>
+           </table>
+          </td>
+        </tr>
+      </table>
+    </td>
+    <!-- Content stuff -->
+    <td width="87%">
+      <table width="770" border="0" cellspacing="0" cellpadding="4">
+        <tr>
+          <td ><img src="/sf-images/misc/home_sourceforge.gif" alt="SourceForge Home" /></td>
+          #if ($home.displayActivityGraph)
+            <td>
+              <table width="100" border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td width="0" valign="top"><img src="/sf-images/misc/stat_corner_lt_top.gif" width="5" height="5"></td>
+                  <td background="/sf-images/misc/stat_horiz_top.gif"><img src="/sf-images/misc/pixel.gif" hright="5"></td>
+                  <td align="right" valign="top"><img src="/sf-images/misc/stat_corner_rt_top.gif" width="5" height="5"></td>
+                </tr>
+                <tr>
+                  <td width="0" background="/sf-images/misc/stat_vert_lt.gif"><img src="/sf-images/misc/pixel.gif" width="5"></td>
+                  <td width="100%"><p><img src="/sf/sfmain/do/drawSourceForgeActivityChart" /></p></td>
+                  <td align="right" background="/sf-images/misc/stat_vert_rt.gif"><img src="/sf-images/misc/pixel.gif" width="5"></td>
+                </tr>
+                <tr>
+                  <td width="0" valign="bottom"><img src="/sf-images/misc/stat_corner_lt_bottom.gif" width="5" height="5"></td>
+                  <td background="/sf-images/misc/stat_horiz_bottom.gif"><img src="/sf-images/misc/pixel.gif" height="5"></td>
+                  <td align="right" valign="bottom"><img src="/sf-images/misc/stat_corner_rt_bottom.gif" width="5" height="5"></td>
+                </tr>
+              </table>
+            </td>
+          #end
+        </tr>
+      </table>
+      ${home.siteNews}
+    </td>
+  </tr>
+</table>

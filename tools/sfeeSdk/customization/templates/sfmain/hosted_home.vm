@@ -1,0 +1,90 @@
+<table width="100%">
+  <tr>
+    <td align="center">
+      <br/><br/>
+      #if ($PAGE_INFO.isLoggedIn())
+        #set ($userGuideUrl = $MESSAGE.get("Common", "url.userGuide.hosted"))
+        #set ($developerGuideUrl = $MESSAGE.get("Common", "url.developerGuide.hosted"))
+        <table border="0" cellpadding="0" cellspacing="0" width="450">
+          <tr>
+            <td><img src="/sf-images/misc/leftnav_leftcap.gif" width="5" height="22"></td>
+            <td width="100%" class="LeftNavigationHeader" ><img src="/sf-images/misc/pixel.gif">
+              ${MESSAGE.get("SfMain", "hostedHome.logged_in_box.title")}
+            </td>
+            <td><img src="/sf-images/misc/leftnav_rightcap.gif" width="5" height="22"></td>
+          </tr>
+        </table>
+        <table class="LeftNavigation" border="0" cellpadding="0" cellspacing="0" width="450">
+          <tbody>
+            <tr>
+              <td class="InstructionHeader" valign="top">
+                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                  <tr>
+                    <td>${MESSAGE.get("SfMain", "hostedHome.logged_in_box.content", "javascript:RH_ShowHelp(0, helpRoot, HH_DISPLAY_TOC, 0);;", $userGuideUrl, $developerGuideUrl)}</td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr class="ContainerFooter">
+              <td colspan=2></td>
+            </tr>
+          </tbody>
+        </table>
+      #else
+        <table border="0" cellpadding="0" cellspacing="0" width="450">
+          <tr>
+            <td><img src="/sf-images/misc/leftnav_leftcap.gif" width="5" height="22"></td>
+            <td width="100%" class="LeftNavigationHeader" ><img src="/sf-images/misc/pixel.gif">
+              ${MESSAGE.get("SfMain", "hostedHome.login_box.title")}
+            </td>
+            <td><img src="/sf-images/misc/leftnav_rightcap.gif" width="5" height="22"></td>
+          </tr>
+        </table>
+        ${FORM.startForm("/sfmain/do/login", "localLogin", "login")}
+          <table class="LeftNavigation" border="0" cellpadding="0" cellspacing="0" width="450">
+            <tbody>
+              <tr>
+                <td valign="top">
+                  <table class="LeftNavContent" border="0" cellpadding="0" cellspacing="0">
+                    <tbody>
+                      <tr valign="top">
+                        <td nowrap>${MESSAGE.getFieldLabel("SfMain", "sfmain.prompt.username", true)}</td>
+                        <td><input type="text" name="username" class="inputfield" size="13"/></td>
+                      </tr>
+                      <tr valign="top">
+                        <td>${MESSAGE.getFieldLabel("Common", "prompt.password", true)}</td>
+                        <td><input type="password" name="password" class="inputfield" size="13" onkeypress="javascript:submitLoginOnEnter(event)" /></td>
+                      </tr>
+                      <tr>
+                         <td colspan="2">
+                           <a href="${LINK.getPageUrl("", "/sfmain/do/forgotPassword")}">${MESSAGE.get("SfMain", "sfmain.forgotpassword.link")}</a>
+                         </td>
+                      </tr>
+                      <tr>
+                        #set ($submitText = $MESSAGE.get("SfMain", "sfmain.login"))
+                        <td colspan="2"><div class="AlignRight">${PAGE_INFO.createSubmitButton("loginButton", "localLogin", "<strong>$submitText</strong>")}</div></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+                <td class="InstructionHeader" valign="top">
+                  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                      <td><strong>${MESSAGE.get("SfMain", "hostedHome.header.instructions")}</strong></td>
+                    </tr>
+                    <tr>
+                      <td>${MESSAGE.get("SfMain", "hostedHome.content.instructions")}</td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr class="ContainerFooter">
+                <td colspan=2></td>
+              </tr>
+            </tbody>
+          </table>
+        ${FORM.endForm()}
+      #end
+    </td>
+  </tr>
+</table>
