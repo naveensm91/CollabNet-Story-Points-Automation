@@ -1,0 +1,267 @@
+<?xml version="1.0"?>
+
+
+<!--
+   This ant buildfile both complies and runs the sample TeamForge
+   programs.  The default target, build, simply compiles the examples.
+   <p>
+   Each example then has a target that runs that example.  For
+   example, the target "example1" runs the first example, and so on.
+   <p>
+   Lastly, the "clean" target will remove all built components.
+   <p>
+   The pre-requisites needed by this sample bundle are:
+   <p>
+      a Java VM:              Version 1.5 or higher
+      the ant distribution:   1.6.2 or higher.
+   <p>
+   Once these tools are downloaded, be sure to define JAVA_HOME and
+   ANT_HOME, and ensure that the java and ant commands are in your
+   path.
+-->
+
+
+<project name="Example TeamForge programs" default="build" basedir=".">
+
+
+<!-- load property settings from build.properties file -->
+<property file="./properties/build.properties"/>
+
+
+
+<!--
+	Declare external jar files needed to build and run the examples
+	in this ant file
+-->
+<path id="build.path">
+	<pathelement path="${ctf.jars}"/>
+   <pathelement path="${java.bin.dir}"/>
+</path>
+
+
+
+<!-- 
+	the build target; this turns .java files into .classes
+-->
+<target name="build" depends="prepare">
+	<javac srcdir="${java.src.dir}" destdir="${java.bin.dir}"
+		 debug="${compile.debug.prop}">
+		<classpath refid="build.path"/>
+	</javac>
+   <copy todir="${java.bin.dir}">
+       <fileset dir="${prop.dir}">
+         <include name="log4j.properties"/>
+       </fileset>
+     </copy>
+</target>
+
+
+
+<!--
+	the run targets.  There is one target per example and the command
+	line arguments are taken from the build.properties file.
+-->
+<target name="example1" depends="build"
+        description="runs the example1 program">
+	<java classname="com.collab.examples.Example1"
+		fork="true">
+      <arg value="${teamforge.url}"/>
+		<arg value="${teamforge.username}"/>
+		<arg value="${teamforge.password}"/>
+		<classpath refid="build.path"/>
+	</java>
+</target>
+
+<target name="example2" depends="build"
+     description="runs the example2 program">
+   <java classname="com.collab.examples.Example2"
+      fork="true">
+      <arg value="${teamforge.url}"/>
+      <arg value="${teamforge.username}"/>
+      <arg value="${teamforge.password}"/>
+      <arg value="${teamforge.userFindMe}"/>
+      <classpath refid="build.path"/>
+   </java>
+</target>
+
+<target name="example3" depends="build"
+     description="runs the example3 program">
+   <java classname="com.collab.examples.Example3"
+      fork="true">
+      <arg value="${teamforge.url}"/>
+      <arg value="${teamforge.username}"/>
+      <arg value="${teamforge.password}"/>
+      <arg value="${teamforge.tracker}"/>
+      <classpath refid="build.path"/>
+   </java>
+</target>
+
+<target name="example4" depends="build"
+     description="runs the example4 program">
+   <java classname="com.collab.examples.Example4"
+      fork="true">
+      <arg value="${teamforge.url}"/>
+      <arg value="${teamforge.username}"/>
+      <arg value="${teamforge.password}"/>
+      <arg value="${teamforge.doc.project}"/>
+      <arg value="${teamforge.doc.location}"/>
+      <arg value="${teamforge.doc.file}"/>
+      <classpath refid="build.path"/>
+   </java>
+</target>
+
+<target name="example5" depends="build"
+     description="runs the example5 program">
+   <java classname="com.collab.examples.Example5"
+      fork="true">
+      <arg value="${teamforge.url}"/>
+      <arg value="${teamforge.username}"/>
+      <arg value="${teamforge.password}"/>
+      <arg value="${teamforge.doc.project}"/>
+      <classpath refid="build.path"/>
+   </java>
+</target>
+
+<target name="example6" depends="build"
+  description="runs the example6 program">
+<java classname="com.collab.examples.Example6"
+   fork="true">
+   <arg value="${teamforge.url}"/>
+   <arg value="${teamforge.username}"/>
+   <arg value="${teamforge.password}"/>
+   <arg value="${teamforge.project}"/>
+   <classpath refid="build.path"/>
+</java>
+</target>
+
+<target name="example7" depends="build"
+  description="runs the example7 program">
+<java classname="com.collab.examples.Example7"
+   fork="true">
+   <arg value="${teamforge.url}"/>
+   <arg value="${teamforge.username}"/>
+   <arg value="${teamforge.password}"/>
+   <arg value="${teamforge.project}"/>
+   <classpath refid="build.path"/>
+</java>
+</target>
+
+<!-- old examples -->
+<target name="example1-44" depends="build"
+        description="runs the example1 program">
+	<java classname="com.collab.examples44.Example1"
+		fork="true">
+      <arg value="${teamforge.url}"/>
+		<arg value="${teamforge.username}"/>
+		<arg value="${teamforge.password}"/>
+		<classpath refid="build.path"/>
+	</java>
+</target>
+
+<target name="example2-44" depends="build"
+     description="runs the example2 program">
+   <java classname="com.collab.examples44.Example2"
+      fork="true">
+      <arg value="${teamforge.url}"/>
+      <arg value="${teamforge.username}"/>
+      <arg value="${teamforge.password}"/>
+      <arg value="${teamforge.userFindMe}"/>
+      <classpath refid="build.path"/>
+   </java>
+</target>
+
+<target name="example3-44" depends="build"
+     description="runs the example3 program">
+   <java classname="com.collab.examples44.Example3"
+      fork="true">
+      <arg value="${teamforge.url}"/>
+      <arg value="${teamforge.username}"/>
+      <arg value="${teamforge.password}"/>
+      <arg value="${teamforge.tracker}"/>
+      <classpath refid="build.path"/>
+   </java>
+</target>
+
+<target name="example4-44" depends="build"
+     description="runs the example4 program">
+   <java classname="com.collab.examples44.Example4"
+      fork="true">
+      <arg value="${teamforge.url}"/>
+      <arg value="${teamforge.username}"/>
+      <arg value="${teamforge.password}"/>
+      <arg value="${teamforge.doc.project}"/>
+      <arg value="${teamforge.doc.location}"/>
+      <arg value="${teamforge.doc.file}"/>
+      <classpath refid="build.path"/>
+   </java>
+</target>
+
+<target name="example5-44" depends="build"
+     description="runs the example5 program">
+   <java classname="com.collab.examples44.Example5"
+      fork="true">
+      <arg value="${teamforge.url}"/>
+      <arg value="${teamforge.username}"/>
+      <arg value="${teamforge.password}"/>
+      <arg value="${teamforge.doc.project}"/>
+      <classpath refid="build.path"/>
+   </java>
+</target>
+
+<target name="example6-44" depends="build"
+  description="runs the example6 program">
+<java classname="com.collab.examples44.Example6"
+   fork="true">
+   <arg value="${teamforge.url}"/>
+   <arg value="${teamforge.username}"/>
+   <arg value="${teamforge.password}"/>
+   <arg value="${teamforge.project}"/>
+   <classpath refid="build.path"/>
+</java>
+</target>
+
+<!-- 
+	the prepare target sets up the initial (emply) directory structure that
+	the build process will populate
+-->
+<target name="prepare" 
+	  description="creates initial directory structure">
+  <mkdir dir="${bin.dir}"/>
+  <mkdir dir="${dist.dir}"/>
+  <mkdir dir="${java.bin.dir}"/>
+</target>
+
+
+
+<!--
+	the clean target returns everything back to normal; it removes the products
+	of the javac builds
+-->
+<target name="clean" 
+	  description="removes the build directories">
+	<delete dir="${bin.dir}"/>
+	<delete dir="${dist.dir}"/>
+</target>
+
+
+<!--
+  the compress target builds a distributable bundle out of thes subversion
+  environment
+-->
+<target name="package"  depends="clean" 
+        description="tar and compress the example bundle">
+  <mkdir dir="${dist.dir}"/>
+  <zip  destfile="./dist/teamForgeExamples.zip">
+    <zipfileset dir="./"  prefix="teamforgeExamples">
+      <exclude name="**/.svn"/>
+      <exclude name="**/dist"/>
+      <exclude name="**/teamforgeExamples.zip"/>
+      <exclude name="**/ctfSamplePrograms.iml"/>
+      <exclude name="**/ctfSamplePrograms.ipr"/>
+      <exclude name="**/ctfSamplePrograms.iws"/>
+    </zipfileset>
+  </zip>
+</target>
+
+
+</project>

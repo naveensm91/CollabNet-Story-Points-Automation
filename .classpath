@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" output="classes" path="src"/>
+	<classpathentry kind="var" path="JRE_LIB" rootpath="JRE_SRCROOT" sourcepath="JRE_SRC"/>
+	<classpathentry kind="lib" path="D:/Hobby Projects/CTF_Examples/CTF_Examples/teamforgeExamples/tools/sfeeSdk/soap/lib/log4j-1.2.8.jar"/>
+	<classpathentry kind="lib" path="D:/Hobby Projects/CTF_Examples/CTF_Examples/teamforgeExamples/tools/sfeeSdk/soap/lib/sf_soap44_sdk.jar"/>
+	<classpathentry kind="lib" path="D:/Hobby Projects/CTF_Examples/CTF_Examples/teamforgeExamples/tools/sfeeSdk/soap/lib/sf_soap50_sdk.jar"/>
+	<classpathentry kind="lib" path="D:/Hobby Projects/CTF_Examples/CTF_Examples/teamforgeExamples/tools/sfeeSdk/soap/lib/saaj.jar"/>
+	<classpathentry kind="lib" path="D:/Hobby Projects/CTF_Examples/CTF_Examples/teamforgeExamples/tools/sfeeSdk/soap/lib/activation.jar"/>
+	<classpathentry kind="lib" path="D:/Hobby Projects/CTF_Examples/CTF_Examples/teamforgeExamples/tools/sfeeSdk/soap/lib/mail.jar"/>
+	<classpathentry kind="lib" path="D:/Hobby Projects/CTF_Examples/CTF_Examples/teamforgeExamples/tools/sfeeSdk/soap/lib/axis.jar"/>
+	<classpathentry kind="lib" path="D:/Hobby Projects/CTF_Examples/CTF_Examples/teamforgeExamples/tools/sfeeSdk/soap/lib/jaxrpc.jar"/>
+	<classpathentry kind="lib" path="D:/Hobby Projects/CTF_Examples/CTF_Examples/teamforgeExamples/tools/sfeeSdk/soap/lib/commons-logging.jar"/>
+	<classpathentry kind="lib" path="D:/Hobby Projects/CTF_Examples/CTF_Examples/teamforgeExamples/tools/sfeeSdk/soap/lib/commons-discovery.jar"/>
+	<classpathentry kind="con" path="D:/Hobby Projects/CTF_Examples/CTF_Examples/teamforgeExamples/bin/classes"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
