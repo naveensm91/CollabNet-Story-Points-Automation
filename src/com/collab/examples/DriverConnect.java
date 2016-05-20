@@ -10,12 +10,11 @@ import com.collab.util.TeamForgeConnection;
 
 
 
-public class Example1
+public class DriverConnect
 {
    private static final Logger
-      log = Logger.getLogger(Example1.class);
-
-
+      log = Logger.getLogger(DriverConnect.class);
+   
   /**
    * Example 1 is the prototypical "Hello World" example which connects to a
    * TeamForge server using the TeamForgeConnection utility object.

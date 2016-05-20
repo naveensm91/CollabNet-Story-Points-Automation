@@ -6,24 +6,27 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.collab.util.*;
+import com.collab.util.TeamForgeConnection;
+import com.collab.util.TrackerUtil;
+import com.collab.util.DocumentUtil;
+import com.collab.util.TaskUtil;
 import com.collabnet.ce.soap50.webservices.tracker.ArtifactSoapRow;
 
 
 /**
- * Example6 illustrates some of the method calls for working with SCM
- * checkins.  The output is a table detailing all the project members
- * and their checkin counts.
- * <p>
+ * Example5 illustrates some of the method calls for working with tasks.
+ * The program loops through and displays the user who is the most overloaded,
+ * in other words, the user who is assigned the most hours worth of tasks.
+ *
  */
-public class Example6
+public class OverloadedUser
 {
    private static final Logger
-      log = Logger.getLogger(Example6.class);
+      log = Logger.getLogger(OverloadedUser.class);
 
 
   /**
-   * Example 6 finds the user with the most commits in the project.
+   * Example 5 looks for the most overloaded user.
    * <p>
    * The program expects the following arguments:
    * <p>
@@ -33,11 +36,11 @@ public class Example6
    * <p>
    *    password:         the password of the TeamForge user
    * <p>
-   *    project-id:       The ID of the project containing the commits
+   *    project-id:       The ID of the project containing the tasks
    * <p>
    * @param args command line arguments passed into main().
    * <p>
-   * @throws java.rmi.RemoteException any errors logging in or out of TeamForge will
+   * @throws RemoteException any errors logging in or out of TeamForge will
    *                         be thrown from this method
    */
    public static void main(String args[])
@@ -45,7 +48,7 @@ public class Example6
              Exception
    {
 
-      log.info("running Example6");
+      log.info("running Example5");
 
       String sfUrl;
       String sfUser;
@@ -75,17 +78,19 @@ public class Example6
          /*
             retrieve all artifacts in trackerId
           */
-         ScmUtil scm = new ScmUtil(sfUrl, sessionId);
+         TaskUtil task = new TaskUtil(sfUrl, sessionId);
 
-         log.info("generating table of user checkins");
+         log.info("looking for the most overloaded user");
 
-         scm.reportCommitCounts(projectId);
+         String user = task.overloadedUser(projectId);
+
+         log.info("the most overloaded user is  " + user);
 
          sfc.logoff(sessionId);
 
          log.info("successfully disconnected from TeamForge");
       }
 
-      log.debug("exiting Example6");
+      log.debug("exiting Example5");
    }
 }

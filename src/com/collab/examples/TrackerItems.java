@@ -21,10 +21,10 @@ import com.collabnet.ce.soap50.webservices.tracker.ArtifactSoapRow;
  * then saving it back to the server.
  *
  */
-public class Example3
+public class TrackerItems
 {
    private static final Logger
-      log = Logger.getLogger(Example2.class);
+      log = Logger.getLogger(RetrieveProjects.class);
 
 
   /**

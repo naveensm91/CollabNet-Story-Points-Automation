@@ -21,10 +21,10 @@ import com.collabnet.ce.soap50.webservices.cemain.ProjectSoapRow;
  * project.
  * <p>
  */
-public class Example2
+public class RetrieveProjects
 {
    private static final Logger
-      log = Logger.getLogger(Example2.class);
+      log = Logger.getLogger(RetrieveProjects.class);
 
 
   /**

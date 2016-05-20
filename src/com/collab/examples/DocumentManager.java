@@ -15,10 +15,10 @@ import com.collab.util.DocumentUtil;
  * and then uploads the content of that document.
  *
  */
-public class Example4
+public class DocumentManager
 {
    private static final Logger
-      log = Logger.getLogger(Example4.class);
+      log = Logger.getLogger(DocumentManager.class);
 
 
   /**

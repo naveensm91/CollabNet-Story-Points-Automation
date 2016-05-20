@@ -12,10 +12,10 @@ import com.collab.util.RoleUtil;
 
 
 
-public class Example7
+public class ShowUsersAndGroups
 {
    private static final Logger
-      log = Logger.getLogger(Example7.class);
+      log = Logger.getLogger(ShowUsersAndGroups.class);
 
 
   /**
